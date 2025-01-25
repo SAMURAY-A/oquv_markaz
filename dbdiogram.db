@@ -1,0 +1,124 @@
+Table staff {
+  id int [pk]
+  full_name varchar
+  phone varchar
+  email varchar
+  password varchar
+  role enum("teacher", "admin")
+  is_active boolean
+}
+
+Table staff_course {
+  staff_id int [ref: > staff.id]
+  course_id int [ref: > course.id]
+}
+
+Table course {
+  id int [pk]
+  name varchar
+  description varchar
+  price varchar
+  date_period timestamp
+  daily_duration timestamp
+  category_id bigint [ref: > category.id]
+}
+
+Table category {
+  id bigint [pk]
+  name varchar
+}
+
+Table videos {
+  id bigint [pk]
+  videos varchar
+  lesson_id int [ref: > lessons_of_courses.id]
+}
+
+Table lessons_of_courses {
+  id int [pk]
+  lesson varchar
+  course_id int [ref: > course.id]
+}
+
+Table homework {
+  id int [pk]
+  home_task_id int
+  lesson_of_courses_id int [ref: > lessons_of_courses.id]
+  deadline date
+  task varchar
+}
+
+Table homework_file {
+  id bigint [pk]
+  homework_id int [ref: > homework.id]
+  file varchar
+}
+
+Table homework_ball {
+  id bigint [pk]
+  ball int
+  status varchar
+  comment varchar
+  homework_id int [ref: > student_homework.id]
+}
+
+Table student_homework {
+  id bigint [pk]
+  homework_id bigint [ref: > homework.id]
+  comment varchar
+  student_id int [ref: > student.id]
+}
+
+Table student {
+  id int [pk]
+  full_name varchar
+  phone varchar
+  email varchar
+  hashed_password varchar
+  is_active boolean
+}
+
+Table group {
+  id int [pk]
+  course_id int
+  name varchar
+  group_type varchar
+}
+
+Table staff_group {
+  staff_id int [ref: > staff.id]
+  group_id int [ref: > group.id]
+}
+
+Table payment {
+  id int [pk]
+  payment_method enum("cash", "card", "online")
+  status boolean
+  total_amount decimal
+  enrollment_id int [ref: > enrollment.id]
+}
+
+Table enrollment {
+  id int [pk]
+  course_id int [ref: > course.id]
+  student_id int [ref: > student.id]
+  start_date date
+  end_date date
+}
+
+
+Table student_group{
+  id int [pk]
+  student_id int [ref: > student.id]
+  group_id int [ref: > group.id]
+}
+
+Table student_homework_file {
+  id bigint [pk]
+  student_homework_id int [ref: > student_homework.id]
+  file varchar
+}
+
+
+
+Ref: "group"."course_id" > "course"."id"
